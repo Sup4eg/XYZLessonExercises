@@ -1,0 +1,3 @@
+﻿  XYZLessonExercises.cpp
+C:\mine\projects\XYZ\XYZLessonExercises\XYZLessonExercises.cpp(32): warning C4715: 'Lesson123::runCalculator': not all control paths return a value
+  XYZLessonExercises.vcxproj -> C:\mine\projects\XYZ\XYZLessonExercises\x64\Debug\XYZLessonExercises.exe
