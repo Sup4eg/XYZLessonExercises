@@ -1,3 +1,6 @@
 ﻿  XYZLessonExercises.cpp
-C:\mine\projects\XYZ\XYZLessonExercises\XYZLessonExercises.cpp(47,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\mine\projects\XYZ\XYZLessonExercises\XYZLessonExercises.cpp(49,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\mine\projects\XYZ\XYZLessonExercises\XYZLessonExercises.cpp(270,15): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+C:\mine\projects\XYZ\XYZLessonExercises\XYZLessonExercises.cpp(285,15): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+C:\mine\projects\XYZ\XYZLessonExercises\XYZLessonExercises.cpp(384,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   XYZLessonExercises.vcxproj -> C:\mine\projects\XYZ\XYZLessonExercises\x64\Debug\XYZLessonExercises.exe

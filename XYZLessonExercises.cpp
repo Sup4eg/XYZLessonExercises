@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 class Lesson123 {
@@ -232,8 +234,222 @@ public:
   }
 };
 
+class Lesson223 {
+public:
+  static void run() {
+	const int arraySize = 10;
+	int staticArray[arraySize];
+	for (int i = 0; i < arraySize; ++i) {
+	  staticArray[i] = i;
+	}
+
+	cout << "Static array: ";
+	for (auto it = begin(staticArray); it != end(staticArray); ++it) {
+	  cout << *it << " ";
+	}
+	cout << endl;
+
+	auto it = find(begin(staticArray), end(staticArray), 5);
+	cout << "Found element 5 at index " << distance(begin(staticArray), it) << endl;
+
+	it = find(begin(staticArray), end(staticArray), 11);
+	if (it == end(staticArray)) {
+	  cout << "Element 11 not found" << endl;
+	}
+
+
+  }
+};
+
+class Lesson224 {
+public:
+
+  static int* myLowerBound(int* start, int* end, int value) {
+	while (start < end) {
+	  int* mid = start;
+	  int length = distance(start, end);
+	  advance(mid, length / 2);
+	  if (*mid < value) {
+		start = ++mid;
+	  }
+	  else {
+		end = mid;
+	  }
+	}
+	return start;
+  }
+
+  static int* myUpperBound(int* start, int* end, int value) {
+	while (start < end) {
+	  int* mid = start;
+	  int length = distance(start, end);
+	  advance(mid, length / 2);
+	  if (*mid <= value) {
+		start = ++mid;
+	  }
+	  else {
+		end = mid;
+	  }
+	}
+	return start;
+  }
+
+  static void testLowerBound(int* start, int* end, int value) {
+	cout << "Test(" << value << "): ";
+	int* myAns = myLowerBound(start, end, value);
+	int* stdAns = lower_bound(start, end, value);
+	cout << (myAns < end ? to_string(*myAns) : "null") << " | " << (stdAns < end ? to_string(*stdAns) : "null") << " | " << (myAns == stdAns ? "OK" : "FALL") << endl;
+  }
+
+  static void testUpperBound(int* start, int* end, int value) {
+	cout << "Test(" << value << "): ";
+	int* myAns = myUpperBound(start, end, value);
+	int* stdAns = upper_bound(start, end, value);
+	cout << (myAns < end ? to_string(*myAns) : "null") << " | " << (stdAns < end ? to_string(*stdAns) : "null") << " | " << (myAns == stdAns ? "OK" : "FALL") << endl;
+  }
+
+  static void quickSort(int* array, int arraySize) {
+	if (arraySize <= 1) {
+	  return;
+	}
+
+	int pivot = array[arraySize / 2];
+	int* left = array;
+	int* right = array + arraySize - 1;
+
+	while (left <= right) {
+	  while (*left <= pivot) {
+		++left;
+	  }
+	  while (*right > pivot) {
+		--right;
+	  }
+	  if (left <= right) {
+		swap(*left, *right);
+		++left;
+		--right;
+	  }
+	}
+
+	quickSort(array, int(right - array + 1));
+	quickSort(left, int(arraySize - (left - array)));
+
+  }
+
+
+  static void run() {
+	const int n = 7;
+	int arr[n] = { 1, 3, 4, 5, 7, 8, 9 };
+	
+	cout << "=== lower bound ===\n" << endl;
+	testLowerBound(arr, arr + n, 0);
+	testLowerBound(arr, arr + n, 1);
+	testLowerBound(arr, arr + n, 6);
+	testLowerBound(arr, arr + n, 7);
+	testLowerBound(arr, arr + n, 9);
+	testLowerBound(arr, arr + n, 10);
+
+	cout << "=== upper bound ===\n" << endl;
+	testUpperBound(arr, arr + n, 0);
+	testUpperBound(arr, arr + n, 1);
+	testUpperBound(arr, arr + n, 5);
+	testUpperBound(arr, arr + n, 6);
+	testUpperBound(arr, arr + n, 8);
+	testUpperBound(arr, arr + n, 9);
+	testUpperBound(arr, arr + n, 10);
+  }
+};
+
+class Lesson224Sort {
+public:
+  
+  static void hoarSort(vector<int> &arr) {
+
+	vector<int> less;
+	vector<int> up;
+
+	size_t midIndex = (arr.size() - 1) / 2;
+	int midElement = arr[midIndex];
+
+	for (int i = 0; i < midIndex; ++i){
+	  if (arr[i] <= midElement) {
+		less.push_back(arr[i]);
+	  }
+	  else if (arr[i] > midElement) {
+		up.push_back(arr[i]);
+	  }
+	}
+
+
+	for (int i = midIndex + 1; i < arr.size(); ++i) {
+	  if (arr[i] <= midElement) {
+		less.push_back(arr[i]);
+	  }
+	  else if (arr[i] > midElement) {
+		up.push_back(arr[i]);
+	  }
+	}
+
+
+	if (less.size() == 0 || up.size() == 0) {
+	  less.push_back(midElement);
+	  less.insert(less.end(), up.begin(), up.end());
+	  arr = less;
+	  return;
+	}
+
+	hoarSort(less);
+	hoarSort(up);
+
+	less.push_back(midElement);
+	less.insert(less.end(), up.begin(), up.end());
+	arr = less;
+  }
+
+  static void mergeSort(int arr[], const int N) {
+
+	if (N <= 1) {
+	  return;
+	}
+
+	int middle = (N / 2);
+	mergeSort(arr, middle);
+	mergeSort(arr + middle, N - middle);
+
+	const int n = N / 2;
+	const int m = N;
+	int* result = new int[N];
+	
+
+	int left = 0, right = n, index = 0;
+	while (left < n || right < m) {
+	  if (right == m || (left < n && arr[left] < arr[right])) {
+		result[index] = arr[left];
+		left++;
+	  }
+	  else {
+		result[index] = arr[right];
+		right++;
+	  }
+	  index++;
+	}
+
+	for (int i = 0; i < N; ++i) {
+	  arr[i] = result[i];
+	}
+
+	delete[] result;
+  }
+  
+
+};
+
 
 int main()
 {
-  Lesson212::runReverseArrayForDynamicArray();
+  int A[] = { 11, 2, 8, 13, 15 };
+  int* B = partition(A, end(A), [](int i) {return i % 2 == 0; });
+
+  cout << "here";
+
 } 
